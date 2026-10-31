@@ -1,0 +1,296 @@
+:root {
+  --bg: #f7f5fc;
+  --panel: #ffffff;
+  --panel-2: #f1edfa;
+  --border: #e4dff0;
+  --text: #18181b;
+  --muted: #71717a;
+  /* Logo colours: magenta → violet → sky blue. */
+  --accent: #7c4dff;
+  --accent-text: #ffffff;
+  --accent-grad: linear-gradient(135deg, #d946c8, #7c4dff 55%, #3ba7f0);
+  --del: #dc2626;
+  --radius: 8px;
+
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #120f1a;
+    --panel: #19152a;
+    --panel-2: #221c36;
+    --border: #2f2745;
+    --text: #ece8f5;
+    --muted: #958ead;
+    --accent: #9b7bff;
+    --del: #f87171;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="range"] {
+  accent-color: var(--accent);
+}
+
+input[type="number"],
+select {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.side p {
+  margin: 6px 0 0;
+}
+
+.primary {
+  width: 100%;
+  background: var(--accent-grad);
+  border-color: transparent;
+  color: var(--accent-text);
+}
+
+.error {
+  color: var(--del);
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 40px 1fr 56px auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.thumb {
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.item .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon {
+  padding: 2px 8px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.settings label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings input[type="number"] {
+  width: 72px;
+}
+
+.settings label.check {
+  justify-content: flex-start;
+}
+
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.seg button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.seg button:last-child {
+  border-radius: 0 6px 6px 0;
+  border-left: none;
+}
+
+.seg .on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.preview {
+  position: relative;
+  overflow: auto;
+  padding: 16px 24px 32px;
+  /* Faint logo watermark; the bg-coloured layer on top fades it. Stays put while pages scroll. */
+  background:
+    linear-gradient(color-mix(in srgb, var(--bg) 88%, transparent), color-mix(in srgb, var(--bg) 88%, transparent)),
+    url("../src-tauri/icons/icon.png") center / 280px no-repeat;
+}
+
+.count {
+  margin-bottom: 12px;
+}
+
+.pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* Paper stays white in dark mode: it previews what prints. */
+.page {
+  position: relative;
+  flex: none;
+  background: #fff;
+  box-shadow: 0 1px 4px #0003;
+  overflow: hidden;
+}
+
+/* Window onto a photo; Frame positions the rotated img inside. */
+.frame {
+  position: relative;
+  overflow: hidden;
+  flex: none;
+}
+
+.frame img {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+.cell {
+  position: absolute;
+  cursor: pointer;
+}
+
+.editor {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  padding: 16px;
+}
+
+.editor::backdrop {
+  background: #0008;
+}
+
+.editor > * + * {
+  margin-top: 12px;
+}
+
+.editor label,
+.editor .row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor input[type="range"] {
+  flex: 1;
+}
+
+.editor .row .primary {
+  width: auto;
+  margin-left: auto;
+}
+
+.grab {
+  cursor: grab;
+  touch-action: none;
+  background: #fff;
+}
+
+.cut {
+  position: absolute;
+  background: #bbb;
+}
+
+.cut.v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.cut.h {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
